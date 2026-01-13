@@ -1,6 +1,10 @@
 from app.services.vector_store import vector_store
 from langchain_groq import ChatGroq
-from langchain.agents.middleware import dynamic_prompt, ModelRequest
+from langchain.agents.middleware import (
+    dynamic_prompt,
+    ModelRequest,
+    SummarizationMiddleware,
+)
 from app.core.config import settings
 
 # Initialize the Groq model
@@ -11,6 +15,12 @@ model = ChatGroq(
     temperature=0.2,
     max_tokens=512,
     timeout=60,
+)
+
+summarization_middleware = SummarizationMiddleware(
+    model=ChatGroq(api_key=settings.GROQ_API_KEY, model="groq/compound-mini"),
+    trigger=("tokens", 8000),
+    keep=("messages", 20),
 )
 
 

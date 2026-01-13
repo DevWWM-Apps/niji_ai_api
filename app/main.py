@@ -10,7 +10,7 @@ from langchain.agents import create_agent
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
-from app.services.rag_chains import model, prompt_with_context
+from app.services.rag_chains import model, prompt_with_context, summarization_middleware
 
 
 def custom_generate_unique_id(route: APIRoute) -> str:
@@ -34,7 +34,10 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
     ) as checkpointer:
         await checkpointer.setup()
         app.state.agent = create_agent(
-            model, tools=[], checkpointer=checkpointer, middleware=[prompt_with_context]
+            model,
+            tools=[],
+            checkpointer=checkpointer,
+            middleware=[summarization_middleware, prompt_with_context],
         )
         yield
 
