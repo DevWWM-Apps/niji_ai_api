@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from dotenv import dotenv_values
 from app.api.main import api_router
 from app.core.config import settings
@@ -66,6 +66,18 @@ def read_root() -> dict:
         "version": "1.0",
         "info": "Check the /docs routes",
     }
+
+
+@app.get("/test", tags=["root"])
+def test(request: Request):
+    checkpoint = request.app.state.agent.checkpointer
+    # return
+    print(
+        [
+            checkpoint
+            for checkpoint in checkpoint.list({"configurable": {"thread_id": "1"}})
+        ]
+    )
 
 
 app.include_router(api_router)
