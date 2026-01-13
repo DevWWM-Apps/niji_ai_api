@@ -38,5 +38,7 @@ class Settings(BaseSettings):
 
     SQLALCHEMY_DATABASE_URI: str
 
+    GROQ_API_KEY: str
+
 
 settings = Settings()
