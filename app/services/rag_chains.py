@@ -1,9 +1,6 @@
 from app.services.vector_store import vector_store
 from langchain_groq import ChatGroq
 from langchain.agents.middleware import dynamic_prompt, ModelRequest
-from langchain.agents import create_agent
-from langgraph.checkpoint.postgres import PostgresSaver
-from collections.abc import Generator
 from app.core.config import settings
 
 # Initialize the Groq model
@@ -41,17 +38,3 @@ def prompt_with_context(request: ModelRequest) -> str:
     """
 
     return system_message
-
-
-# def get_agent() -> Generator[PostgresSaver, None, None]:
-#     """Create and return the RAG agent with Postgres checkpointer."""
-#     with PostgresSaver.from_conn_string(
-#         settings.SQLALCHEMY_DATABASE_URI
-#     ) as checkpointer:
-#         checkpointer.setup()  # auto create tables in PostgresSql
-#         agent = create_agent(
-#             model, tools=[], checkpointer=checkpointer, middleware=[prompt_with_context]
-#         )
-#         yield agent
-
-agent = create_agent(model, tools=[], middleware=[prompt_with_context])
