@@ -16,6 +16,7 @@ dependencies = [
     "langgraph-checkpoint-postgres>=3.0.3",
     "psycopg[binary,pool]>=3.3.2",
     "sentence-transformers>=5.2.0",
+    "sqlmodel>=0.0.31",
     "torch>=2.9.1",
 ]
 
